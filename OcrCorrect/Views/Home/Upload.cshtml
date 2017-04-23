@@ -1,0 +1,18 @@
+﻿@model OcrCorrect.Models.RenderedModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>OCR</h2>
+        @foreach(var line in Model.Lines)
+        {
+            @(line)<br />
+        }
+    </div>
+    <div class="col-md-6">
+        <h2>Corrected</h2>
+        @foreach (var line in Model.CorrectedLines)
+        {
+            @(line)<br />
+        }
+    </div>
+</div>

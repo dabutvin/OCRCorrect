@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Upload a file:</p>
+                    <input type="file" name="file" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>OCR key:</p>
+                    <input type="text" name="ocrKey" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>SpellCheck key:</p>
+                    <input type="text" name="spellCheckKey" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
