@@ -24,19 +24,19 @@ namespace OcrCorrect
             _message.Content.Headers.Add("Content-Type", "application/octet-stream");
         }
 
-        public async Task<string[][]> GetLinesAsync(IFormFile file)
+        public async Task<string[]> GetLinesAsync(IFormFile file)
         {
             var response = await _httpClient.SendAsync(_message);
 
             var json = await response.Content.ReadAsStringAsync();
             var ocrResponse = JsonConvert.DeserializeObject<OcrResponse>(json);
 
-            var lines = new List<string[]>();
+            var lines = new List<string>();
             foreach(var region in ocrResponse.regions)
             {
                 foreach(var line in region.lines)
                 {
-                    lines.Add(line.words.Select(x => x.text).ToArray());
+                    lines.Add(string.Join(" ", line.words.Select(x => x.text).ToArray()));
                 }
             }
 

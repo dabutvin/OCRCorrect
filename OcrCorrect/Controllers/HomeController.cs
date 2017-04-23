@@ -28,35 +28,17 @@ namespace OcrCorrect.Controllers
                     stream.Seek(0, 0);
 
                     using (var ocrClient = new OcrClient(stream.ToArray(), ocrKey))
+                    using (var replaceClient = new ReplaceClient())
+                    using (var spellCheckClient = new SpellCheckClient(spellCheckKey))
                     {
                         var lines = await ocrClient.GetLinesAsync(file);
-
-                        var checkedLines = new List<string>();
-
-                        using (var spellCheckClient = new SpellCheckClient(spellCheckKey))
-                        {
-                            for(var i=0; i<lines.Length; i++)
-                            {
-                                var preLines = Enumerable.Range(0, Math.Max(i - 1, 0))
-                                    .SelectMany(x => lines[x])
-                                    .ToArray();
-
-                                var postLines = Enumerable.Range(Math.Min(i + 1, lines.Length - 1), lines.Length - i - 1)
-                                    .SelectMany(x => lines[x])
-                                    .ToArray();
-
-                                checkedLines.Add(
-                                    await spellCheckClient.CorrectAsync(
-                                        string.Join(" ", lines[i]),
-                                        string.Join(" ", preLines),
-                                        string.Join(" ", postLines)));
-                            }
-                        }
+                        var replacedLines = await replaceClient.ReplaceAsync(lines);
+                        var checkedLines = await spellCheckClient.CorrectAsync(replacedLines);
 
                         var model = new RenderedModel
                         {
-                            Lines = lines.Select(x => string.Join(" ", x)).ToArray(),
-                            CorrectedLines = checkedLines.ToArray(),
+                            Lines = lines,
+                            CorrectedLines = checkedLines,
                         };
 
                         return View(model);
