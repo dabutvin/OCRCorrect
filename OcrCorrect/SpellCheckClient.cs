@@ -38,7 +38,7 @@ namespace OcrCorrect
 
                 var correctedWords = new List<string>();
 
-                foreach(var flaggedtoken in spellCheckResponse.flaggedTokens?.Where(x => x?.suggestions?.Any() == true))
+                foreach(var flaggedtoken in spellCheckResponse?.flaggedTokens?.Where(x => x?.suggestions?.Any() == true) ?? new FlaggedToken[0])
                 {
                     line = line.Replace($" {flaggedtoken.token} " , $" {flaggedtoken.suggestions.First().suggestion} ");
                 }
