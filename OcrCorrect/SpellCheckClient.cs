@@ -40,7 +40,7 @@ namespace OcrCorrect
 
                 foreach(var flaggedtoken in spellCheckResponse.flaggedTokens?.Where(x => x?.suggestions?.Any() == true))
                 {
-                    line = line.Replace(flaggedtoken.token, flaggedtoken.suggestions.First().suggestion);
+                    line = line.Replace($" {flaggedtoken.token} " , $" {flaggedtoken.suggestions.First().suggestion} ");
                 }
 
                 return line;
